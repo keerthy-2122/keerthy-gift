@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For My Forever ❤️</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+  height: 100vh;
+  background: radial-gradient(circle at top, #16002b, #3a0ca3, #f72585);
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  perspective: 1200px;
+}
+
+/* Container */
+.container {
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(18px);
+  padding: 30px;
+  border-radius: 25px;
+  width: 90%;
+  max-width: 420px;
+  text-align: center;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+}
+
+.hidden { display: none; }
+
+h1, h2 { margin-bottom: 20px; }
+
+/* Inputs */
+input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  border: none;
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+button {
+  padding: 12px 25px;
+  border-radius: 30px;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.yes {
+  background: linear-gradient(135deg, #ff4d8d, #ff99c8);
+  color: white;
+}
+
+.no {
+  background: white;
+  color: #f72585;
+  position: absolute;
+}
+
+/* Floating hearts */
+.heart {
+  position: absolute;
+  animation: floatUp 5s linear forwards;
+}
+@keyframes floatUp {
+  to { transform: translateY(-900px); opacity: 0; }
+}
+
+/* ================= BOX ================= */
+.box-scene {
+  width: 200px;
+  height: 200px;
+  margin: 40px auto;
+  position: relative;
+  transform-style: preserve-3d;
+}
+
+.box {
+  width: 200px;
+  height: 120px;
+  background: linear-gradient(135deg, #ff4d8d, #ff85b3);
+  border-radius: 20px;
+  position: absolute;
+  bottom: 0;
+  transform: rotateX(15deg);
+  transform-style: preserve-3d;
+}
+
+/* Lid */
+.lid {
+  width: 200px;
+  height: 60px;
+  background: linear-gradient(135deg, #ffe6f2, #ffffff);
+  border-radius: 20px 20px 0 0;
+  position: absolute;
+  top: -60px;
+  transform-origin: bottom;
+  transition: transform 1s ease;
+}
+
+/* Shake animation */
+.shake {
+  animation: shake 0.8s;
+}
+@keyframes shake {
+  0%,100% { transform: rotateX(15deg) translateX(0); }
+  25% { transform: rotateX(15deg) translateX(-6px); }
+  50% { transform: rotateX(15deg) translateX(6px); }
+  75% { transform: rotateX(15deg) translateX(-4px); }
+}
+
+/* ================= RING (NEW DESIGN) ================= */
+.ring-holder {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Gold band */
+.ring {
+  width: 20px;
+  height: 80px;
+  border-radius: 50%;
+  border: 5px solid #ffd700;
+  background: linear-gradient(to right, #ffec8b, #ffd700, #ffec8b);
+  box-shadow: 0 0 20px rgba(255,215,0,0.8);
+  transform: rotateX(70deg);
+  position: relative;
+}
+
+/* Diamond */
+.diamond {
+  width: 18px;
+  height: 18px;
+  background: linear-gradient(135deg, #ffffff, #cce6ff);
+  position: absolute;
+  top: -22px;
+  left: -4px;
+  transform: rotate(45deg);
+  box-shadow: 0 0 15px rgba(255,255,255,0.9);
+}
+
+/* Engraved name */
+.name {
+  position: absolute;
+  top: 32px;
+  left: -8px;
+  font-size: 9px;
+  color: #fff3b0;
+  transform: rotateX(70deg);
+  white-space: nowrap;
+}
+
+/* Pop + bounce */
+.pop {
+  animation: popUp 1.2s ease-out forwards, bounce 0.5s 1.2s ease;
+}
+
+@keyframes popUp {
+  from { transform: translate(-50%, 80px); opacity: 0; }
+  to { transform: translate(-50%, -40px); opacity: 1; }
+}
+
+@keyframes bounce {
+  0% { transform: translate(-50%, -40px); }
+  50% { transform: translate(-50%, -55px); }
+  100% { transform: translate(-50%, -45px); }
+}
+
+/* Sparks */
+.spark {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: gold;
+  border-radius: 50%;
+  animation: spark 1s forwards;
+}
+@keyframes spark {
+  to {
+    transform: translate(var(--x), var(--y));
+    opacity: 0;
+  }
+}
+
+/* Fireworks */
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+</style>
+</head>
+
+<body>
+
+<audio id="music" src="love.mp3" loop></audio>
+<canvas id="fireworks"></canvas>
+
+<!-- STEP 1 -->
+<div class="container" id="step1">
+  <h1>Hey My Love ❤️</h1>
+  <p>Enter our special date 💕</p>
+  <input type="date" id="dateInput">
+  <button class="yes" onclick="checkDate()">Continue</button>
+</div>
+
+<!-- STEP 2 -->
+<div class="container hidden" id="step2">
+  <h2>Will you be my love? 💖</h2>
+  <button class="yes" onclick="goToGift()">YES 😍</button>
+  <button class="no" id="noBtn">No 🙈</button>
+</div>
+
+<!-- STEP 3 -->
+<div class="container hidden" id="step3">
+  <h2>Tap the box 🎁</h2>
+
+  <div class="box-scene" onclick="openBox()">
+    <div class="box" id="box">
+      <div class="lid" id="lid"></div>
+
+      <div class="ring-holder" id="ringHolder">
+        <div class="ring">
+          <div class="diamond"></div>
+          <div class="name" id="name"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h1 id="finalText" class="hidden">Happy Propose Day Baby 💍❤️</h1>
+</div>
+
+<script>
+/* CONFIG */
+const HIS_NAME = "Your Love";
+
+/* Music */
+document.body.addEventListener("click", () =>
+  document.getElementById("music").play(), { once: true }
+);
+
+/* Floating hearts */
+setInterval(() => {
+  const h = document.createElement("div");
+  h.className = "heart";
+  h.innerHTML = "❤️";
+  h.style.left = Math.random() * innerWidth + "px";
+  h.style.bottom = "0";
+  h.style.fontSize = Math.random() * 20 + 15 + "px";
+  document.body.appendChild(h);
+  setTimeout(() => h.remove(), 5000);
+}, 350);
+
+/* Date check */
+function checkDate() {
+  if (dateInput.value === "2025-10-06") {
+    step1.classList.add("hidden");
+    step2.classList.remove("hidden");
+  } else {
+    alert("That’s not OUR date 😏❤️");
+  }
+}
+
+/* Impossible NO button */
+const noBtn = document.getElementById("noBtn");
+document.addEventListener("mousemove", e => {
+  const rect = noBtn.getBoundingClientRect();
+  const dx = e.clientX - (rect.left + rect.width/2);
+  const dy = e.clientY - (rect.top + rect.height/2);
+  if (Math.abs(dx) < 120 && Math.abs(dy) < 120) {
+    noBtn.style.left = Math.random() * (innerWidth - 100) + "px";
+    noBtn.style.top = Math.random() * (innerHeight - 50) + "px";
+  }
+});
+
+function goToGift() {
+  step2.classList.add("hidden");
+  step3.classList.remove("hidden");
+  document.getElementById("name").innerText = HIS_NAME;
+}
+
+/* Open box */
+function openBox() {
+  const box = document.getElementById("box");
+  const lid = document.getElementById("lid");
+  const ring = document.getElementById("ringHolder");
+
+  box.classList.add("shake");
+
+  setTimeout(() => {
+    lid.style.transform = "rotateX(120deg)";
+    ring.classList.add("pop");
+    finalText.classList.remove("hidden");
+    sparks();
+    fireworks();
+  }, 800);
+}
+
+/* Sparks */
+function sparks() {
+  const scene = document.querySelector(".box-scene");
+  for (let i = 0; i < 30; i++) {
+    const s = document.createElement("div");
+    s.className = "spark";
+    s.style.left = "100px";
+    s.style.top = "100px";
+    s.style.setProperty("--x", `${Math.random()*200-100}px`);
+    s.style.setProperty("--y", `${Math.random()*200-100}px`);
+    scene.appendChild(s);
+    setTimeout(() => s.remove(), 1000);
+  }
+}
+
+/* Fireworks */
+const canvas = document.getElementById("fireworks");
+const ctx = canvas.getContext("2d");
+canvas.width = innerWidth;
+canvas.height = innerHeight;
+
+function fireworks() {
+  for (let i = 0; i < 150; i++) {
+    ctx.fillStyle = `hsl(${Math.random()*360},100%,60%)`;
+    ctx.beginPath();
+    ctx.arc(innerWidth/2 + Math.random()*300-150,
+            innerHeight/2 + Math.random()*300-150,
+            3, 0, Math.PI*2);
+    ctx.fill();
+  }
+  setTimeout(() => ctx.clearRect(0,0,canvas.width,canvas.height), 2000);
+}
+</script>
+
+</body>
+</html>
